@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "muffin-wallet.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "muffin-wallet.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "muffin-wallet.selectorLabels" . | nindent 8 }}
+    spec:
+
+      volumes:
+        - name: {{ .Values.volume.name }}
+          configMap:
+            name: {{ include "muffin-wallet.fullname" . }}
+
+      containers:
+      - name: {{ .Values.container.name }}
+
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+        ports:
+          - containerPort: {{ .Values.container.port }}
+
+        volumeMounts:
+          - name: {{ .Values.volume.name }}
+            mountPath: {{ .Values.container.mountPath }}
+
+        envFrom:
+          - secretRef:
+              name: {{ include "muffin-wallet.fullname" . }}
+          - configMapRef:
+              name: {{ include "muffin-wallet.fullname" . }}-env
+
+        {{- if .Values.probes.liveness.enabled }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.probes.liveness.path }}
+            port: {{ .Values.probes.liveness.port }}
+          initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+        {{- end }}
+
+        {{- if .Values.probes.readiness.enabled }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.probes.readiness.path }}
+            port: {{ .Values.probes.readiness.port }}
+          initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+        {{- end }}
