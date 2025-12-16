@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: wallet
+  namespace: muffin
+spec:
+  hosts:
+    - wallet.example.com
+  gateways:
+    - wallet-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: muffin-wallet.muffin.svc.cluster.local
+            port:
+              number: 80

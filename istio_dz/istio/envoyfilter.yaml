@@ -1,0 +1,45 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: wallet-ingress-local-ratelimit
+  namespace: istio-system
+spec:
+  workloadSelector:
+    labels:
+      istio: ingressgateway
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: GATEWAY
+      listener:
+        filterChain:
+          filter:
+            name: envoy.filters.network.http_connection_manager
+            subFilter:
+              name: envoy.filters.http.router
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: envoy.filters.http.local_ratelimit
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
+          stat_prefix: wallet_local_rl
+          filter_enabled:
+            runtime_key: wallet_local_rl_enabled
+            default_value:
+              numerator: 100
+              denominator: HUNDRED
+          filter_enforced:
+            runtime_key: wallet_local_rl_enforced
+            default_value:
+              numerator: 100
+              denominator: HUNDRED
+          token_bucket:
+            max_tokens: 20
+            tokens_per_fill: 20
+            fill_interval: 1s
+          response_headers_to_add:
+          - append: false
+            header:
+              key: x-local-rate-limit
+              value: "true"

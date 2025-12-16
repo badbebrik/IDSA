@@ -1,0 +1,3 @@
+name: muffin
+labels:
+  istio-injection: enabled

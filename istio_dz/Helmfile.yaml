@@ -1,0 +1,20 @@
+releases:
+  - name: muffin-namespace
+    namespace: default
+    chart: ./muffin-namespace
+
+  - name: muffin-currency
+    namespace: muffin
+    chart: ./muffin-currency
+    needs:
+      - default/muffin-namespace
+    values:
+      - ./muffin-currency/values.yaml
+
+  - name: muffin-wallet
+    namespace: muffin
+    chart: ./muffin-wallet
+    needs:
+      - default/muffin-namespace
+    values:
+      - ./muffin-wallet/values.yaml

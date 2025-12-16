@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: postgres-disable-mtls
+  namespace: muffin
+spec:
+  host: host.minikube.internal
+  trafficPolicy:
+    tls:
+      mode: DISABLE

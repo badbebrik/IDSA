@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: muffin-currency-resilience
+  namespace: muffin
+spec:
+  hosts:
+  - muffin-currency
+  http:
+  - match:
+    - uri:
+        prefix: /rate
+    retries:
+      attempts: 3
+      perTryTimeout: 1s
+      retryOn: "5xx,connect-failure,refused-stream,reset,deadline-exceeded"
+    timeout: 3s
+    route:
+    - destination:
+        host: muffin-currency
+        port:
+          number: 8083

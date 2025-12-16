@@ -1,0 +1,18 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-currency-only-from-wallet
+  namespace: muffin
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: muffin-currency
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals:
+        - "cluster.local/ns/muffin/sa/muffin-wallet"
+    to:
+    - operation:
+        ports: ["8080"]
