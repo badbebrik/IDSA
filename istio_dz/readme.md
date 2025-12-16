@@ -62,7 +62,8 @@ curl -v http://muffin-currency:8083/rate
 PostgreSQL не является частью кластера, развернут через докер. Взаимодействие с ним происходит через ServiceEntry(serviceentry.yaml).  
 
 ## Запуск
-1. Установить istio в кластер по инструкции из документации.
-2. `helmfile apply`
-3. `kubectl apply -f istio/`
+1. Установить istio в кластер по инструкции из документации. Установить Kiali, Jaeger, Prometheus по инструкции из документации.
+2. Поднять БД (postgres/docker-compose)
+3. `helmfile apply`
+4. `kubectl apply -f istio/`
 
