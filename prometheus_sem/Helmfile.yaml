@@ -1,0 +1,31 @@
+repositories:
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+
+releases:
+
+  - name: postgres
+    namespace: default
+    chart: bitnami/postgresql
+    values:
+      - ./postgres/values.yaml
+
+  - name: muffin-currency
+    namespace: default
+    chart: ./muffin-currency
+    values:
+      - ./muffin-currency/values.yaml
+
+  - name: muffin-wallet
+    namespace: default
+    chart: ./muffin-wallet
+    values:
+      - ./muffin-wallet/values.yaml
+
+  - name: prometheus
+    namespace: monitoring
+    chart: prometheus-community/prometheus
+    values:
+      - ./prometheus/values.yaml

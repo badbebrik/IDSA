@@ -1,0 +1,18 @@
+auth:
+  username: muffin-wallet
+  password: muffin-wallet
+  database: muffin_wallet
+
+primary:
+  initdb:
+    scripts:
+      init.sql: |
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+metrics:
+  enabled: true
+  service:
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9187"
+      prometheus.io/path: "/metrics"

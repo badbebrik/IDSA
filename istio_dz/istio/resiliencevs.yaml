@@ -5,7 +5,7 @@ metadata:
   namespace: muffin
 spec:
   hosts:
-  - muffin-currency
+  - muffin-currency.muffin.svc.cluster.local
   http:
   - match:
     - uri:
@@ -20,3 +20,8 @@ spec:
         host: muffin-currency
         port:
           number: 8083
+    fault:
+      abort:
+        httpStatus: 500
+        percentage:
+          value: 100
