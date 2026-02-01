@@ -4,14 +4,17 @@ config:
 
   snippets:
     pipelineStages:
-      - json:
-          expressions:
-            trace_id: trace_id
-            level: level
-            msg: msg
-      - regex:
-          expression: '.*\[(?P<trace_id>[a-f0-9]+)-(?P<span_id>[a-f0-9]+)\]'
+    - json:
+        expressions:
+          trace_id: trace_id
+          level: level
+          msg: msg
+    - regex:
+        expression: '.* (?P<level>TRACE|DEBUG|INFO|WARN|ERROR) [0-9]+ --- .*'
+    - regex:
+        expression: '.*\[(?P<trace_id>[a-f0-9]+)-(?P<span_id>[a-f0-9]+)\]'
+    - labels:
+        level:
+        trace_id:
 
-      - labels:
-          trace_id:
-          level:
+
