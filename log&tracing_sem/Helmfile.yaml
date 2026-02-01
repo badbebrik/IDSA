@@ -1,0 +1,60 @@
+repositories:
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+  - name: openzipkin
+    url: https://openzipkin.github.io/zipkin-helm
+
+
+releases:
+
+  - name: postgres
+    namespace: default
+    chart: bitnami/postgresql
+    values:
+      - ./postgres/values.yaml
+
+  - name: muffin-currency
+    namespace: default
+    chart: ./muffin-currency_helm
+    values:
+      - ./muffin-currency_helm/values.yaml
+
+  - name: muffin-wallet
+    namespace: default
+    chart: ./muffin-wallet_helm
+    values:
+      - ./muffin-wallet_helm/values.yaml
+
+  - name: prometheus
+    namespace: monitoring
+    chart: prometheus-community/prometheus
+    values:
+      - ./prometheus/values.yaml
+
+  - name: zipkin
+    namespace: monitoring
+    chart: openzipkin/zipkin
+    values:
+      - ./zipkin/values.yaml
+
+  - name: loki
+    namespace: monitoring
+    chart: grafana/loki
+    values:
+      - ./loki/values.yaml
+
+  - name: promtail
+    namespace: monitoring
+    chart: grafana/promtail
+    values:
+      - ./promtail/values.yaml
+
+  - name: grafana
+    namespace: monitoring
+    chart: grafana/grafana
+    values:
+      - ./grafana/values.yaml

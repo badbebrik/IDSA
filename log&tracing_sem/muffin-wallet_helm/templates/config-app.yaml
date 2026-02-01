@@ -8,15 +8,27 @@ data:
       port: {{ .Values.container.port }}
 
     spring:
+      application:
+        name: muffin-wallet
       datasource:
         url: {{ .Values.config.datasource.url }}
         username: {{ .Values.config.datasource.username }}
+
+    logging:
+      pattern:
+        level: "%5p [%X{traceId:-}-%X{spanId:-}]"
 
     currency:
       service:
         url: {{ .Values.config.currency.url }}
 
     management:
+      tracing:
+        enabled: true
+        sampling:
+          probability: 1.0
+        propagation:
+          type: b3_multi
       endpoints:
         web:
           exposure:
@@ -26,3 +38,7 @@ data:
           probes:
             enabled: {{ .Values.management.probesEnabled }}
           show-details: {{ .Values.management.showDetails }}
+      zipkin:
+        tracing:
+          enabled: true
+          endpoint: {{ .Values.tracing.zipkinEndpoint | quote }}

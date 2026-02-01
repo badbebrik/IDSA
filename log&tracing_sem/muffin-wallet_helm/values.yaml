@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: aadan1lov/muffin-wallet
-  tag: "1.1.0"
-  pullPolicy: Always
+  repository: badbebrik/muffin-wallet
+  tag: "dev-4"
+  pullPolicy: IfNotPresent
 
 container:
   port: 8081 
@@ -62,3 +62,6 @@ ingress:
           pathType: Prefix
           servicePort: 80
   tls: []
+
+tracing:
+  zipkinEndpoint: "http://zipkin.monitoring.svc.cluster.local:9411/api/v2/spans"

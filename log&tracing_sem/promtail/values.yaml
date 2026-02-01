@@ -1,0 +1,17 @@
+config:
+  clients:
+    - url: http://loki:3100/loki/api/v1/push
+
+  snippets:
+    pipelineStages:
+      - json:
+          expressions:
+            trace_id: trace_id
+            level: level
+            msg: msg
+      - regex:
+          expression: '.*\[(?P<trace_id>[a-f0-9]+)-(?P<span_id>[a-f0-9]+)\]'
+
+      - labels:
+          trace_id:
+          level:

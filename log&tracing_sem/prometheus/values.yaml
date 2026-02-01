@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 5s
+  scrape_timeout: 4s
+
+server:
+  verticalAutoscaler:
+    enabled: false
+  extraScrapeConfigs:
+    - job_name: "muffin-wallet"
+      metrics_path: /actuator/prometheus
+      static_configs:
+        - targets: ["muffin-wallet.default.svc.cluster.local:80"]
+        
+    - job_name: "muffin-currency"
+      metrics_path: /metrics
+      static_configs:
+        - targets: ["muffin-currency.default.svc.cluster.local:8083"]

@@ -21,6 +21,10 @@ spec:
         ports:
         - containerPort: {{ .Values.service.targetPort }}
 
+        env:
+          - name: ZIPKIN_ENDPOINT
+            value: {{ .Values.tracing.zipkinEndpoint | quote }}
+
         {{- if .Values.probes.liveness.enabled }}
         livenessProbe:
           httpGet:
